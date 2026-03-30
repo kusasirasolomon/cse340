@@ -1,0 +1,24 @@
+<%- include("../partials/head") %>
+
+    <body>
+        <%- include("../partials/header") %>
+            <%- include("../partials/nav") %>
+
+                <main class="container">
+                    <h1>
+                        <%= classificationName %> Vehicles
+                    </h1>
+
+                    <% if (grid && grid.length> 0) { %>
+                        <section class="vehicle-list">
+                            <%- grid %>
+                        </section>
+                        <% } else { %>
+                            <p>No vehicles found in this category.</p>
+                            <% } %>
+                </main>
+
+                <%- include("../partials/footer") %>
+    </body>
+
+    </html>
