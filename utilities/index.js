@@ -47,39 +47,86 @@ function buildClassificationGrid(data) {
 }
 
 // Build the HTML for a single vehicle detail page
+// function buildDetailView(vehicle) {
+//     return `
+//     <div class="vehicle-detail">
+//       <img src="${vehicle.inv_image}" alt="${vehicle.inv_make} ${vehicle.inv_model}">
+
+//       <div class="vehicle-info">
+//         <h2>${vehicle.inv_year} ${vehicle.inv_make} ${vehicle.inv_model}</h2>
+
+//         <p><strong>Price:</strong> $${new Intl.NumberFormat('en-US').format(vehicle.inv_price)}</p>
+
+//         <p><strong>Mileage:</strong> ${new Intl.NumberFormat('en-US').format(vehicle.inv_miles)} miles</p>
+
+//         <p><strong>Description:</strong> ${vehicle.inv_description}</p>
+//         <p><strong>Color:</strong> ${vehicle.inv_color}</p>
+//       </div>
+//     </div>
+//   `
+// }
 function buildDetailView(vehicle) {
-    return `
+  return `
     <div class="vehicle-detail">
-      <img src="${vehicle.inv_image}" alt="${vehicle.inv_make} ${vehicle.inv_model}">
+
+      <div class="vehicle-image">
+        <img src="${vehicle.inv_image}" alt="${vehicle.inv_make} ${vehicle.inv_model}">
+      </div>
 
       <div class="vehicle-info">
         <h2>${vehicle.inv_year} ${vehicle.inv_make} ${vehicle.inv_model}</h2>
 
-        <p><strong>Price:</strong> $${new Intl.NumberFormat('en-US').format(vehicle.inv_price)}</p>
+        <p class="price">💰 Price: $${new Intl.NumberFormat('en-US').format(vehicle.inv_price)}</p>
 
-        <p><strong>Mileage:</strong> ${new Intl.NumberFormat('en-US').format(vehicle.inv_miles)} miles</p>
+        <p class="mileage">📍 Mileage: ${new Intl.NumberFormat('en-US').format(vehicle.inv_miles)} miles</p>
 
-        <p><strong>Description:</strong> ${vehicle.inv_description}</p>
         <p><strong>Color:</strong> ${vehicle.inv_color}</p>
+
+        <p class="description">${vehicle.inv_description}</p>
       </div>
+
     </div>
   `
 }
 
-// If you have a nav builder (from previous assignments), keep it
+
+//     
+//     return `
+//     <nav class="main-nav">
+//       <ul>
+//         <li><a href="/">Home</a></li>
+//         <li><a href="/inv/classification/Custom">Custom</a></li>
+//         <li><a href="/inv/classification/Sedan">Sedan</a></li>
+//         <li><a href="/inv/classification/SUV">SUV</a></li>
+//         <li><a href="/inv/classification/Truck">Truck</a></li>
+//       </ul>
+//     </nav>
+//   `
+// }
+
+const pool = require("../database")
+
 async function getNav() {
-    // Example: fetch navigation HTML dynamically or return static
-    return `
-    <nav class="main-nav">
-      <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/inv/classification/Custom">Custom</a></li>
-        <li><a href="/inv/classification/Sedan">Sedan</a></li>
-        <li><a href="/inv/classification/SUV">SUV</a></li>
-        <li><a href="/inv/classification/Truck">Truck</a></li>
-      </ul>
-    </nav>
-  `
+  const data = await pool.query(
+    "SELECT * FROM classification ORDER BY classification_name"
+  )
+
+  let nav = '<nav class="main-nav"><ul>'
+  nav += '<li><a href="/">Home</a></li>'
+
+  data.rows.forEach(row => {
+    nav += `
+            <li>
+                <a href="/inv/classification/${row.classification_name}">
+                    ${row.classification_name}
+                </a>
+            </li>
+        `
+  })
+
+  nav += '</ul></nav>'
+
+  return nav
 }
 
 // =======================
