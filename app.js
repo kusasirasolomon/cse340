@@ -107,6 +107,8 @@ pool.connect((err, client, release) => {
     }
 });
 
+app.use(express.urlencoded({ extended: true }));
+
 // ==============================
 // Routes
 // ==============================
@@ -123,7 +125,7 @@ const utilities = require("./utilities")
 
 app.get("/", async (req, res) => {
     try {
-        const nav = await utilities.getNav()
+        const nav = await utilities.getNav() || "";
 
         res.render("index", {
             title: "Home",
@@ -165,6 +167,8 @@ app.use((err, req, res, next) => {
         error: process.env.NODE_ENV === "development" ? err : {}
     });
 });
+
+// app.use(express.urlencoded({ extended: true }));
 
 // ==============================
 // Start Server

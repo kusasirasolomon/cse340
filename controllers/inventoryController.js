@@ -63,8 +63,64 @@ function triggerError(req, res, next) {
     throw new Error("Intentional Server Error")
 }
 
+
+async function buildAddClassification(req, res, next) {
+    try {
+        res.render("inventory/add-classification", {
+            title: "Add Classification",
+            nav: await utilities.getNav(),
+            errors: null,
+            classification_name: ""
+        });
+    } catch (error) {
+        next(error);
+    }
+}
+
+async function addClassification(req, res, next) {
+    try {
+        const { classification_name } = req.body;
+
+        // validation
+        if (!classification_name) {
+            return res.render("inventory/add-classification", {
+                title: "Add Classification",
+                nav: await utilities.getNav(),
+                errors: "Classification name is required",
+                classification_name: ""
+            });
+        }
+
+        // insert into DB
+        const result = await invModel.addClassification(classification_name);
+
+        if (result) {
+            res.redirect("/inv");
+        } else {
+            throw new Error("Failed to add classification");
+        }
+
+    } catch (error) {
+        next(error);
+    }
+}
+
+async function buildManagementView(req, res, next) {
+    try {
+        res.render("inventory/management", {
+            title: "Inventory Management",
+            nav: await utilities.getNav(),
+            messages: req.flash()
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
 module.exports = {
     buildDetailView,
     buildClassificationView,
-    triggerError
+    triggerError,
+    buildAddClassification,
+    addClassification
 }

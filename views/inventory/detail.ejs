@@ -8,7 +8,9 @@
         <%- detailHTML %>
     </main> -->
 
-    <!DOCTYPE html>
+    <!-- second last attempt -->
+
+    <!-- <!DOCTYPE html>
     <html lang="en">
     
     <head>
@@ -37,4 +39,31 @@
     
     </body>
     
+    </html> -->
+
+
+    <!-- last change -->
+<%- include("../partials/head") %>
+
+    <body>
+
+        <%- include("../partials/header") %>
+
+            <%- nav %>
+
+                <main id="detail">
+                    <h1>
+                        <%= title %>
+                    </h1>
+
+                    <div id="vehicle-display">
+                        <%- detailHTML %>
+                    </div>
+
+                </main>
+
+                <%- include("../partials/footer") %>
+
+    </body>
+
     </html>
