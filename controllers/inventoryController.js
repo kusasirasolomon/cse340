@@ -139,10 +139,12 @@ async function addClassification(req, res, next) {
 
 async function buildManagementView(req, res, next) {
     try {
+        const inventoryList = await invModel.getAllInventory()
         res.render("inventory/management", {
             title: "Inventory Management",
             nav: await utilities.getNav(),
-            messages: req.flash()
+            messages: req.flash(),
+            inventoryList
         })
     } catch (error) {
         next(error)
@@ -196,13 +198,88 @@ async function addInventory(req, res, next) {
     } catch (error) { next(error) }
 }
 
-// module.exports = {
-//     buildDetailView,
-//     buildClassificationView,
-//     triggerError,
-//     buildAddClassification,
-//     addClassification
-// }
+// Build edit inventory view
+async function buildEditInventory(req, res, next) {
+    try {
+        const inv_id = req.params.inv_id
+        const vehicle = await invModel.getInventoryById(inv_id)
+        res.render("inventory/edit-inventory", {
+            title: `Edit ${vehicle.inv_make} ${vehicle.inv_model}`,
+            nav: await utilities.getNav(),
+            classificationList: await utilities.buildClassificationList(vehicle.classification_id),
+            errors: [],
+            messages: req.flash(),
+            ...vehicle
+        })
+    } catch (error) { next(error) }
+}
+
+// Process edit inventory
+async function editInventory(req, res, next) {
+    try {
+        const errors = validationResult(req)
+        const { inv_id, inv_make, inv_model, inv_year, inv_price, inv_miles,
+            inv_color, inv_description, inv_image, inv_thumbnail, classification_id } = req.body
+
+        if (!errors.isEmpty()) {
+            return res.render("inventory/edit-inventory", {
+                title: `Edit ${inv_make} ${inv_model}`,
+                nav: await utilities.getNav(),
+                classificationList: await utilities.buildClassificationList(classification_id),
+                errors: errors.array(),
+                messages: req.flash(),
+                inv_id, inv_make, inv_model, inv_year, inv_price,
+                inv_miles, inv_color, inv_description, inv_image, inv_thumbnail
+            })
+        }
+
+        const result = await invModel.updateInventory({
+            inv_id, inv_make, inv_model, inv_year, inv_price,
+            inv_miles, inv_color, inv_description, inv_image, inv_thumbnail, classification_id
+        })
+
+        if (result) {
+            req.flash("success", `${inv_make} ${inv_model} updated successfully!`)
+            res.redirect("/inv/")
+        } else {
+            req.flash("error", "Update failed. Please try again.")
+            res.redirect(`/inv/edit/${inv_id}`)
+        }
+    } catch (error) { next(error) }
+}
+
+// Build delete confirmation view
+async function buildDeleteConfirm(req, res, next) {
+    try {
+        const inv_id = req.params.inv_id
+        const vehicle = await invModel.getInventoryById(inv_id)
+        res.render("inventory/delete-confirm", {
+            title: `Delete ${vehicle.inv_make} ${vehicle.inv_model}`,
+            nav: await utilities.getNav(),
+            errors: [],
+            messages: req.flash(),
+            ...vehicle
+        })
+    } catch (error) { next(error) }
+}
+
+// Process delete inventory
+async function deleteInventoryItem(req, res, next) {
+    try {
+        const { inv_id } = req.body
+        const result = await invModel.deleteInventory(inv_id)
+
+        if (result) {
+            req.flash("success", "Vehicle deleted successfully!")
+            res.redirect("/inv/")
+        } else {
+            req.flash("error", "Delete failed. Please try again.")
+            res.redirect(`/inv/delete/${inv_id}`)
+        }
+    } catch (error) { next(error) }
+}
+
+
 module.exports = {
     buildDetailView,
     buildClassificationView,
@@ -211,5 +288,9 @@ module.exports = {
     addClassification,
     buildManagementView,
     buildAddInventory,
-    addInventory
+    addInventory,
+    buildEditInventory,
+    editInventory,
+    buildDeleteConfirm,
+    deleteInventoryItem
 }

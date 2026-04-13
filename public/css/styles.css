@@ -621,3 +621,153 @@ main h2 {
         justify-content: center;
     }
 }
+
+/* =========================
+   INVENTORY TABLE
+========================= */
+.inventory-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 2rem;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.inventory-table th {
+    background: #0077aa;
+    color: white;
+    padding: 1rem;
+    text-align: left;
+}
+
+.inventory-table td {
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid #ddd;
+}
+
+.inventory-table tr:last-child td {
+    border-bottom: none;
+}
+
+.inventory-table tr:hover {
+    background: #f4f4f4;
+}
+
+/* =========================
+   EDIT & DELETE BUTTONS
+========================= */
+.btn-edit {
+    background: #0077aa;
+    color: white;
+    padding: 0.4rem 0.8rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin-right: 0.5rem;
+    transition: background 0.3s;
+}
+
+.btn-edit:hover {
+    background: #005580;
+}
+
+.btn-delete {
+    background: #e74c3c;
+    color: white;
+    padding: 0.4rem 0.8rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: background 0.3s;
+}
+
+.btn-delete:hover {
+    background: #c0392b;
+}
+
+/* =========================
+   DELETE CONFIRM PAGE
+========================= */
+.delete-confirm {
+    max-width: 500px;
+    margin: 2rem auto;
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.delete-confirm p {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+.vehicle-summary {
+    background: #f4f4f4;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+}
+
+.vehicle-summary p {
+    color: #333;
+    font-weight: normal;
+    margin-bottom: 0.5rem;
+}
+
+.btn-delete-confirm {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-right: 1rem;
+}
+
+.btn-delete-confirm:hover {
+    background: #c0392b;
+}
+
+.btn-cancel {
+    background: #333;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.btn-cancel:hover {
+    background: #555;
+}
+
+/* =========================
+   RESPONSIVE TABLE
+========================= */
+@media (max-width: 768px) {
+    .inventory-table {
+        font-size: 0.85rem;
+    }
+
+    .inventory-table th,
+    .inventory-table td {
+        padding: 0.5rem;
+    }
+
+    .btn-edit,
+    .btn-delete {
+        display: block;
+        margin-bottom: 0.3rem;
+        text-align: center;
+    }
+}

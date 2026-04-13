@@ -35,5 +35,11 @@ router.get("/add-classification", utilities.checkEmployeeOrAdmin, invController.
 router.post("/add-classification", utilities.checkEmployeeOrAdmin, classificationValidation, invController.addClassification)
 router.get("/add-inventory", utilities.checkEmployeeOrAdmin, invController.buildAddInventory)
 router.post("/add-inventory", utilities.checkEmployeeOrAdmin, inventoryValidation, invController.addInventory)
+// Edit inventory routes - protected
+router.get("/edit/:inv_id", utilities.checkEmployeeOrAdmin, invController.buildEditInventory)
+router.post("/edit", utilities.checkEmployeeOrAdmin, inventoryValidation, invController.editInventory)
 
+// Delete inventory routes - protected
+router.get("/delete/:inv_id", utilities.checkEmployeeOrAdmin, invController.buildDeleteConfirm)
+router.post("/delete", utilities.checkEmployeeOrAdmin, invController.deleteInventoryItem)
 module.exports = router

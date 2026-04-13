@@ -59,10 +59,48 @@ async function addInventory({ inv_make, inv_model, inv_year, inv_price,
     } catch (error) { throw error }
 }
 
+// Get single inventory item for editing
+async function updateInventory({ inv_id, inv_make, inv_model, inv_year, inv_price,
+    inv_miles, inv_color, inv_description, inv_image, inv_thumbnail, classification_id }) {
+    try {
+        const sql = `UPDATE inventory SET
+            inv_make = $1, inv_model = $2, inv_year = $3, inv_price = $4,
+            inv_miles = $5, inv_color = $6, inv_description = $7,
+            inv_image = $8, inv_thumbnail = $9, classification_id = $10
+            WHERE inv_id = $11 RETURNING *`
+        const result = await pool.query(sql, [
+            inv_make, inv_model, inv_year, inv_price,
+            inv_miles, inv_color, inv_description,
+            inv_image, inv_thumbnail, classification_id, inv_id
+        ])
+        return result.rows[0]
+    } catch (error) { throw error }
+}
+
+// Delete inventory item
+async function deleteInventory(inv_id) {
+    try {
+        const sql = "DELETE FROM inventory WHERE inv_id = $1"
+        const result = await pool.query(sql, [inv_id])
+        return result.rowCount
+    } catch (error) { throw error }
+}
+
+async function getAllInventory() {
+    try {
+        const sql = "SELECT * FROM inventory ORDER BY inv_make"
+        const result = await pool.query(sql)
+        return result.rows
+    } catch (error) { throw error }
+}
+
 module.exports = {
     getInventoryById,
     getVehiclesByClassification,
     addClassification,
+    getClassifications,
     addInventory,
-    getClassifications
+    updateInventory,
+    deleteInventory,
+    getAllInventory
 }
