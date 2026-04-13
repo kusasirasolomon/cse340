@@ -66,7 +66,18 @@ app.use(express.static(path.join(__dirname, "public")));
 // ==============================
 // Body Parser (IMPORTANT for forms)
 // ==============================
-app.use(express.urlencoded({ extended: true }));
+const session = require("express-session")
+const flash = require("connect-flash")
+
+app.use(session({
+    secret: process.env.SESSION_SECRET || "superSecret",
+    resave: false,
+    saveUninitialized: true
+}))
+// app.use(flash())
+app.use(flash())
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
 
 // ==============================
 // Database Connection Test

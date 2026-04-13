@@ -1,0 +1,28 @@
+<%- include("../partials/head") %>
+
+    <body>
+        <%- include("../partials/header") %>
+            <%- nav %>
+                <main>
+                    <h1>Inventory Management</h1>
+
+                    <% if (messages.success) { %>
+                        <p class="flash-success">
+                            <%= messages.success %>
+                        </p>
+                        <% } %>
+                            <% if (messages.error) { %>
+                                <p class="flash-error">
+                                    <%= messages.error %>
+                                </p>
+                                <% } %>
+
+                                    <ul class="management-links">
+                                        <li><a href="/inv/add-classification">Add New Classification</a></li>
+                                        <li><a href="/inv/add-inventory">Add New Inventory Item</a></li>
+                                    </ul>
+                </main>
+                <%- include("../partials/footer") %>
+    </body>
+
+    </html>

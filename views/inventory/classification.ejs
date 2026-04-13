@@ -1,80 +1,22 @@
-<!-- <%- include("../partials/head") %>
-
-    <body>
-        <%- include("../partials/header") %>
-            <%- include("../partials/nav") %>
-
-                <main class="container">
-                    <h1>
-                        <%= classificationName %> Vehicles
-                    </h1>
-
-                    <% if (grid && grid.length> 0) { %>
-                        <section class="vehicle-list">
-                            <%- grid %>
-                        </section>
-                        <% } else { %>
-                            <p>No vehicles found in this category.</p>
-                            <% } %>
-                </main>
-
-                <%- include("../partials/footer") %>
-    </body>
-
-    </html> -->
-<!-- attempt 2 -->
-
-
-
-
-
-
-    <!-- <%- include("../partials/head") %>
-    
-        <body>
-            <%- include("../partials/header") %>
-                <%- include("../partials/nav") %>
-    
-                    <main class="container">
-                        <h1>
-                            <%= classificationName %> Vehicles
-                        </h1>
-    
-                        <% if (grid && grid.length> 0) { %>
-                            <section class="vehicle-list">
-                                <%- grid %>
-                            </section>
-                            <% } else { %>
-                                <p>No vehicles found in this category.</p>
-                                <% } %>
-                    </main>
-    
-                    <%- include("../partials/footer") %>
-        </body>
-    
-        </html> -->
 <%- include("../partials/head") %>
 
     <body>
         <%- include("../partials/header") %>
-
-            <!--  USE DYNAMIC NAV -->
             <%- nav %>
-
-                <main class="container">
+                <main>
                     <h1>
-                        <%= classificationName %> Vehicles
+                        <%= title %>
                     </h1>
 
                     <% if (grid && grid.length> 0) { %>
-                        <section class="vehicle-list">
+                        <ul id="inv-display">
                             <%- grid %>
-                        </section>
+                        </ul>
                         <% } else { %>
                             <p>No vehicles found in this category.</p>
                             <% } %>
-                </main>
 
+                </main>
                 <%- include("../partials/footer") %>
     </body>
 
