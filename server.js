@@ -41,7 +41,8 @@ require("dotenv").config();
 const express = require("express");
 const path = require("path");
 const app = express();
-
+const cookieParser = require("cookie-parser")
+app.use(cookieParser())
 // ==============================
 // Routes
 // ==============================
@@ -79,6 +80,8 @@ app.use(flash())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
+app.use(utilities.checkJWTToken)
+
 // ==============================
 // Database Connection Test
 // ==============================
@@ -98,6 +101,9 @@ pool.connect((err, client, release) => {
 // ==============================
 app.use("/inv", inventoryRoute);
 
+
+const accountRoute = require("./routes/accountRoute")
+app.use("/account", accountRoute)
 // ==============================
 // Home Route (FIXED NAV ISSUE)
 // ==============================

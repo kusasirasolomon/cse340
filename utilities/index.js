@@ -254,13 +254,74 @@ async function buildClassificationList(classification_id = null) {
   list += "</select>"
   return list
 }
+const jwt = require("jsonwebtoken")
+const cookieParser = require("cookie-parser")
+
+// Check login middleware
+function checkLogin(req, res, next) {
+  if (req.cookies.jwt) {
+    jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET, function (err, accountData) {
+      if (err) {
+        req.flash("error", "Please log in.")
+        return res.redirect("/account/login")
+      }
+      res.locals.accountData = accountData
+      res.locals.loggedin = 1
+      next()
+    })
+  } else {
+    req.flash("error", "Please log in.")
+    return res.redirect("/account/login")
+  }
+}
+
+// Check JWT middleware (for all pages)
+function checkJWTToken(req, res, next) {
+  if (req.cookies.jwt) {
+    jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET, function (err, accountData) {
+      if (err) {
+        res.locals.loggedin = 0
+        res.locals.accountData = null
+        return next()
+      }
+      res.locals.accountData = accountData
+      res.locals.loggedin = 1
+      next()
+    })
+  } else {
+    res.locals.loggedin = 0
+    res.locals.accountData = null
+    next()
+  }
+}
+
+// Check Employee or Admin
+function checkEmployeeOrAdmin(req, res, next) {
+  if (req.cookies.jwt) {
+    jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET, function (err, accountData) {
+      if (err || (accountData.account_type !== "Employee" && accountData.account_type !== "Admin")) {
+        req.flash("error", "You must be an Employee or Admin to access this area.")
+        return res.redirect("/account/login")
+      }
+      res.locals.accountData = accountData
+      res.locals.loggedin = 1
+      next()
+    })
+  } else {
+    req.flash("error", "Please log in.")
+    return res.redirect("/account/login")
+  }
+}
 
 // =======================
 // Exports
 // =======================
 module.exports = {
+  getNav,
   buildClassificationGrid,
   buildDetailView,
-  getNav,
-  buildClassificationList
+  buildClassificationList,
+  checkLogin,
+  checkJWTToken,
+  checkEmployeeOrAdmin
 }

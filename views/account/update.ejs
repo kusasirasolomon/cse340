@@ -1,0 +1,68 @@
+<%- include("../partials/head") %>
+
+    <body>
+        <%- include("../partials/header") %>
+            <%- nav %>
+                <main>
+                    <h1>
+                        <%= title %>
+                    </h1>
+
+                    <% if (messages.success) { %>
+                        <p class="flash-success">
+                            <%= messages.success %>
+                        </p>
+                        <% } %>
+                            <% if (messages.error) { %>
+                                <p class="flash-error">
+                                    <%= messages.error %>
+                                </p>
+                                <% } %>
+
+                                    <% if (errors && errors.length> 0) { %>
+                                        <ul class="errors">
+                                            <% errors.forEach(e=> { %><li>
+                                                    <%= e.msg %>
+                                                </li>
+                                                <% }) %>
+                                        </ul>
+                                        <% } %>
+
+                                            <h2>Update Account Information</h2>
+                                            <form action="/account/update" method="POST" novalidate>
+                                                <label>First Name:
+                                                    <input type="text" name="account_firstname"
+                                                        value="<%= accountData.account_firstname %>" required>
+                                                </label>
+                                                <label>Last Name:
+                                                    <input type="text" name="account_lastname"
+                                                        value="<%= accountData.account_lastname %>" required>
+                                                </label>
+                                                <label>Email:
+                                                    <input type="email" name="account_email"
+                                                        value="<%= accountData.account_email %>" required>
+                                                </label>
+                                                <input type="hidden" name="account_id"
+                                                    value="<%= accountData.account_id %>">
+                                                <button type="submit">Update Account</button>
+                                            </form>
+
+                                            <h2>Change Password</h2>
+                                            <p><em>Password must be at least 12 characters and include uppercase,
+                                                    lowercase, number and special character.</em></p>
+                                            <form action="/account/update-password" method="POST" novalidate>
+                                                <label>New Password:
+                                                    <input type="password" name="account_password"
+                                                        pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"
+                                                        title="Min 12 chars, must include uppercase, lowercase, number and special character"
+                                                        required>
+                                                </label>
+                                                <input type="hidden" name="account_id"
+                                                    value="<%= accountData.account_id %>">
+                                                <button type="submit">Change Password</button>
+                                            </form>
+                </main>
+                <%- include("../partials/footer") %>
+    </body>
+
+    </html>
