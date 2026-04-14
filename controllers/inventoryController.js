@@ -79,33 +79,6 @@ async function buildAddClassification(req, res, next) {
 
 
 
-// async function addClassification(req, res, next) {
-//     try {
-//         const { classification_name } = req.body;
-
-//         // validation
-//         if (!classification_name) {
-//             return res.render("inventory/add-classification", {
-//                 title: "Add Classification",
-//                 nav: await utilities.getNav(),
-//                 errors: "Classification name is required",
-//                 classification_name: ""
-//             });
-//         }
-
-//         // insert into DB
-//         const result = await invModel.addClassification(classification_name);
-
-//         if (result) {
-//             res.redirect("/inv");
-//         } else {
-//             throw new Error("Failed to add classification");
-//         }
-
-//     } catch (error) {
-//         next(error);
-//     }
-// }
 
 const { validationResult } = require("express-validator")
 
